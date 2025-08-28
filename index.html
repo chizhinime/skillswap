@@ -34,11 +34,19 @@
         .testimonial-card:hover {
             transform: translateY(-5px);
         }
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- Navbar -->
-    <nav class="bg-white shadow-md fixed w-full z-10">
+    <nav class="bg-white shadow-md fixed w-full z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <a href="#" class="flex items-center space-x-2">
                 <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -55,13 +63,28 @@
                 <a href="#contact" class="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
             </div>
 
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                Sign Up / Login
-            </button>
-
-            <button class="md:hidden text-gray-600">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+            <div class="flex items-center space-x-4">
+                <button class="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    Sign Up / Login
+                </button>
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden bg-white border-t border-gray-200">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#home" class="text-gray-600 hover:text-blue-600 py-2 transition-colors">Home</a>
+                <a href="#about" class="text-gray-600 hover:text-blue-600 py-2 transition-colors">About</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-blue-600 py-2 transition-colors">How It Works</a>
+                <a href="#browse-skills" class="text-gray-600 hover:text-blue-600 py-2 transition-colors">Browse Skills</a>
+                <a href="#contact" class="text-gray-600 hover:text-blue-600 py-2 transition-colors">Contact</a>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors w-full mt-2">
+                    Sign Up / Login
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -343,6 +366,32 @@
             { name: "Digital Marketing", icon: "fas fa-chart-line", category: "business" },
             { name: "Music Lessons", icon: "fas fa-music", category: "art" }
         ];
+
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            const icon = mobileMenuButton.querySelector('i');
+            if (mobileMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                const icon = mobileMenuButton.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
 
         // Initialize the skills grid
         function initSkills() {
